@@ -1,0 +1,27 @@
+name: Latest Blog Posts
+
+on:
+  schedule:
+    # Runs every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-readme-with-blog:
+    name: Update this repo's README with latest blog posts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Pull in dev.to posts
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          comment_tag_name: "BLOG-POST-LIST"
+          feed_list: "https://dev.to/feed/celalbasaran,https://medium.com/@celalbasaran/feed"
+          max_post_count: 6
+          template: "- 📝 [$title]($url) - $description"
+          date_format: "mmmm dS, yyyy"
+          commit_message: "📝 Updated with latest blog posts"
+          committer_username: "blog-post-bot"
+          committer_email: "blog-post-bot@example.com"
